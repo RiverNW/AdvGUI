@@ -1,0 +1,4 @@
+.hoverable:hover,
+.hoverable.active {
+    background-color: var(--mantine-color-dark-5);
+}
