@@ -41,6 +41,9 @@ dependencies:
   react-dom:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
+  react-map-interaction:
+    specifier: ^2.1.0
+    version: 2.1.0(prop-types@15.8.1)(react@18.2.0)
 
 devDependencies:
   '@types/react':
@@ -1961,6 +1964,16 @@ packages:
 
   /react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
+    dev: false
+
+  /react-map-interaction@2.1.0(prop-types@15.8.1)(react@18.2.0):
+    resolution: {integrity: sha512-bD6Gz2nuf60HF4WAYfBOjsqttrFlTd1u/TrCQSxdl3KITiTpTxr1vvLIr1k+NR2w3Jln+gux+oWDbjnh8Dhv7w==}
+    peerDependencies:
+      prop-types: '>=15.0.0'
+      react: '>=16.3.0'
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.2.0
     dev: false
 
   /react-number-format@5.3.1(react-dom@18.2.0)(react@18.2.0):

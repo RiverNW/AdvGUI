@@ -32,13 +32,22 @@ export const ViewEditor = ({
         setState: setSelections,
     }] = useListState<string>([]);
 
-    const [project, setProjectData] = useLocalStorage({
-        key: `project:${id}`,
-        defaultValue: createDefaultProject(),
-    });
+    // hacky
+    const [project, __setData] = useState(
+        localStorage.getItem(`Project:${id}`) ? (
+            JSON.parse(localStorage.getItem(`Project:${id}`))
+        ) : (
+            createDefaultProject()
+        )
+    );
+
+    const setProjectData = (data: Project) => {
+        localStorage.setItem(`Project:${id}`, JSON.stringify(data));
+        __setData(data);
+    }
 
     const [projectMeta, setProjectMeta] = useLocalStorage({
-        key: `project-meta:${id}`,
+        key: `ProjectMeta:${id}`,
         defaultValue: createDefaultMeta(),
     });
 
@@ -116,17 +125,25 @@ export const ViewEditor = ({
     };
 
     const deleteSelectedComponents = () => {
-        setProject({
-            ...project,
-            components: project.components.filter(c => !selections.includes(c.id)),
-        });
+        selections.forEach(x => deleteComponent(x));
     };
 
     const deleteComponent = (id: string) => {
-        if (id === "root") return;
+        let toDelete = [];
+
+        const recurse = (id: string) => {
+            if (id !== "root") toDelete.push(id);
+
+            project.components
+                .filter(x => x.parentId == id)
+                .forEach(x => recurse(x.id));
+        }
+
+        recurse(id);
+
         setProject({
             ...project,
-            components: project.components.filter(c => c.id !== id),
+            components: project.components.filter(c => !toDelete.includes(c.id)),
         });
     };
 
@@ -162,6 +179,11 @@ export const ViewEditor = ({
         ["Ctrl+D", () => duplicateSelectedComponents()],
         // @ts-ignore
         ["Delete", (e) => e.currentTarget.tagName !== "input" && deleteSelectedComponents()],
+
+        // @ts-ignore
+        ["Ctrl+Z", (e) => e.currentTarget.tagName !== "input" && canUndo && undo()],
+        // @ts-ignore
+        ["Ctrl+Y", (e) => e.currentTarget.tagName !== "input" && canRedo && redo()],
     ]);
 
     return (

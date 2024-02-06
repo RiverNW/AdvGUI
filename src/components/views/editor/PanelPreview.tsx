@@ -1,7 +1,11 @@
-import { Box, ScrollArea } from "@mantine/core"
-import { useContext, useState } from "react"
+import { Box, Center, ScrollArea } from "@mantine/core"
+import { useContext, useMemo, useState } from "react"
 import { EditorContext } from "../EditorContext";
 import { useHotkeys } from "@mantine/hooks";
+import { PanelTreeProps } from "./tree/PanelTreeChild";
+import { RendererComponent } from "./preview/RendererComponent";
+import { ScaleContext, useScale } from "./preview/Scale";
+import { MapInteractionCSS } from 'react-map-interaction';
 
 export const PanelPreview = () => {
     return (
@@ -16,26 +20,42 @@ export const RootCanvas = () => {
 
     const [panX, setPanX] = useState(0);
     const [panY, setPanY] = useState(0);
+    const [scale, setScale] = useState(0.8);
 
     useHotkeys([
-        ["w", () => setPanX(_ => _ + 1)],
+        ["w", () => setPanY(_ => _ + 1)],
         ["s", () => setPanY(_ => _ - 1)],
+        ["a", () => setPanX(_ => _ + 1)],
+        ["d", () => setPanX(_ => _ - 1)],
     ])
 
-    const _scale = 16;
+    return (
+        <Box
+            w="100%"
+            h="100%"
+        >
+            <ScaleContext.Provider value={scale}>
+                <MapInteractionCSS>
+                    <ItemFrames />
+                </MapInteractionCSS>
+            </ScaleContext.Provider>
+        </Box>
+    )
+}
+
+const ItemFrames = () => {
+    const { project } = useContext(EditorContext);
 
     return (
-        <ScrollArea
-            maw="100%"
-            mah="100%"
+        <Box
+            bg="dark.3"
+            w={(project.width * 128) + "em"}
+            h={(project.height * 128) + "em"}
         >
-            <Box
-                bg="dark.3"
-                w={(project.width * _scale) + "em"}
-                h={(project.height * _scale) + "em"}
-            >
-                uwu
-            </Box>
-        </ScrollArea>
+            <RendererComponent
+                id="root"
+                tree={project.components}
+            />
+        </Box>
     )
 }

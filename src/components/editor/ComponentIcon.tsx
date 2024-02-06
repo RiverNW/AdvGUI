@@ -1,11 +1,12 @@
-import { IconLayout2, IconLayoutBoard, IconLayoutList, IconTextSize } from "@tabler/icons-react";
+import { IconLayout2, IconLayoutBoard, IconLayoutList, IconSquare, IconTextSize } from "@tabler/icons-react";
 import { Component } from "../../types/components"
 
-const icons = {
+export const ComponentIcons = {
     container: <IconLayout2 />,
     stack: <IconLayoutList />,
     group: <IconLayoutBoard />,
     text: <IconTextSize />,
+    rect: <IconSquare />,
 }
 
 export const ComponentIcon = ({
@@ -13,5 +14,5 @@ export const ComponentIcon = ({
 }: {
     type: string,
 }) => {
-    return icons[type || "container"];
+    return ComponentIcons[type || "container"];
 }

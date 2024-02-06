@@ -2,9 +2,15 @@ import { ActionIcon, Button, Group, Paper, Popover, Stack, Text, Tooltip } from 
 import { Alignment, Component } from "../../types/components"
 import { modals } from "@mantine/modals"
 import { SearchableModal } from "./SearchableModal"
-import { IconLayoutList, IconPlus, IconTextSize } from "@tabler/icons-react"
+import { IconLayoutCards, IconLayoutList, IconPlus, IconTextSize } from "@tabler/icons-react"
 import React from "react"
 import { randId } from "../../utils/randId"
+import { ComponentIcons } from "./ComponentIcon"
+
+interface CListCategory {
+    label: string;
+    items: CListItem[];
+}
 
 interface CListItem {
     icon: React.ReactNode,
@@ -13,42 +19,80 @@ interface CListItem {
     comp: Component,
 }
 
+const _defaults = {
+    id: "",
+    parentId: "root",
+    x: 0,
+    y: 0,
+};
+
 const componentsList: CListItem[] = [
     {
-        icon: <IconLayoutList />,
+        icon: ComponentIcons.stack,
         label: "Stack",
         desc: "Vertical layouts",
         comp: {
-            id: "",
+            ..._defaults,
             type: "stack",
-            parentId: "root",
-            x: 0,
-            y: 0,
+            label: "Stack",
             align: Alignment.Start,
             justify: Alignment.Start,
             gap: 0,
-            height: 100,
-            width: 100,
-            label: "Stack"
+            height: 20,
+            width: 20,
         }
     },
     {
-        icon: <IconTextSize />,
+        icon: ComponentIcons.group,
+        label: "Group",
+        desc: "Horizontal layouts",
+        comp: {
+            ..._defaults,
+            type: "group",
+            label: "Group",
+            align: Alignment.Start,
+            justify: Alignment.Start,
+            height: 20,
+            width: 20,
+        }
+    },
+    {
+        icon: ComponentIcons.container,
+        label: "Container",
+        desc: "Folder of components",
+        comp: {
+            ..._defaults,
+            type: "container",
+            label: "Container",
+        }
+    },
+    {
+        icon: ComponentIcons.text,
         label: "Text",
         desc: "Write some text",
         comp: {
-            parentId: "root",
+            ..._defaults,
             type: "text",
-            text: "Hi",
-            color: "black",
-            font: "Roboto",
-            id: "",
             label: "Text",
+            text: "Text",
+            color: "rgba(0,0,0,1)",
+            font: "Roboto",
             size: 16,
-            x: 0,
-            y: 0,
         },
-    }
+    },
+    {
+        icon: ComponentIcons.rect,
+        label: "Rectangle",
+        desc: "A box",
+        comp: {
+            ..._defaults,
+            type: "rect",
+            label: "Rectangle",
+            color: "rgba(128,128,128,1)",
+            width: 20,
+            height: 20,
+        },
+    },
 ];
 
 export const AddComponentButton = ({

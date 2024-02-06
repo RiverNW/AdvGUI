@@ -21,7 +21,8 @@
     "@mantine/notifications": "^7.5.1",
     "@tabler/icons-react": "^2.47.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-map-interaction": "^2.1.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",

@@ -1,6 +1,6 @@
 import { useContext, useMemo, useState } from "react";
 import { Component, canHaveChildren } from "../../../../types/components"
-import { ActionIcon, Collapse, Group, Stack, Tooltip } from "@mantine/core";
+import { ActionIcon, Collapse, Group, Stack, Text, Tooltip } from "@mantine/core";
 import { IconChevronDown, IconChevronRight, IconTrash } from "@tabler/icons-react";
 import { ComponentIcon } from "../../../editor/ComponentIcon";
 import { AddComponentButton } from "../../../editor/AddComponentButton";
@@ -44,18 +44,18 @@ export const PanelTreeChild = ({
 
     return (
         <Stack gap={0}>
-            <Group justify="space-between" align="center" gap="sm" h="100%" py="2px" my="2px" style={{
+            <Group justify="space-between" align="center" wrap="nowrap" gap="sm" h="100%" py="2px" my="2px" style={{
                 borderBottom: "1px solid var(--mantine-color-dimmed)",
-                borderRadius: "4px"
+                borderRadius: "4px",
             }} className={`hoverable ${selections.includes(id) ? "active" : ""}`}
                 onClick={(e) => {
                     if (!e.ctrlKey) deselectAll();
                     selections.includes(id) ? deselect(id) : select(id);
                 }}
             >
-                <Group>
+                <Group wrap="nowrap">
                     {doHaveChildren ? (
-                        <Group onClick={(e) => {
+                        <Group wrap="nowrap" onClick={(e) => {
                             e.stopPropagation();
                             setProjectMeta({
                                 ...projectMeta,
@@ -69,7 +69,10 @@ export const PanelTreeChild = ({
                             {isOpened ? <IconChevronDown /> : <IconChevronRight />}
                         </Group>
                     ) : <ComponentIcon type={comp.type} />}
-                    <span style={{ userSelect: "none" }}>{comp.label}</span>
+                    <Text span style={{ userSelect: "none" }}>{comp.label}</Text>
+                    {comp.label.toLowerCase() !== comp.type && (
+                        <Text span c="dimmed" style={{ userSelect: "none" }}>{comp.type}</Text>
+                    )}
                 </Group>
                 <Group gap="4px">
                     {isPressingShift && id !== "root" && (
